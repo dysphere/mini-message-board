@@ -1,0 +1,13 @@
+extends layout 
+
+block content
+    h1 Submit a Message 
+    form(method="POST" action="/new") 
+        div 
+            label(for="messageUser") User: 
+            input(type="text" name="messageUser" id="messageUser")
+        div 
+            label(for="messageText") Message: 
+            input(type="text" name="messageText" id="messageText")
+        div 
+            button(type="submit") Submit
