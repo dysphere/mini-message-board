@@ -6,4 +6,5 @@ block content
   a(href="/new") New Entry
   ul 
     each message in messages 
-      li= message.text + " by " + message.user + " published on " + message.added
+      li= message.text + " by " + message.user + " published on " + message.added + message.id
+      a(href='' + message.id) Open
