@@ -1,23 +1,10 @@
 const express = require('express');
+const db = require('../db/queries');
 const router = express.Router();
 
-const messages = [
-  {
-    text: "Hi there!",
-    user: "Amando",
-    added: new Date(),
-    id: 1,
-  },
-  {
-    text: "Hello World!",
-    user: "Charles",
-    added: new Date(),
-    id: 2,
-  },
-];
-
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
+  const messages = await db.getAllMessages();
   res.render('index', { title: "Mini Messageboard", messages: messages });
 });
 
@@ -25,18 +12,15 @@ router.get('/new', function(req, res, next) {
   res.render("form")
 });
 
-router.post('/new', function(req, res, next) {
-  messages.push({text: req.body.messageText, user: req.body.messageUser, added: new Date(), id: messages.length + 1});
+router.post('/new', async function(req, res, next) {
+  await db.insertMessage(req.body.messageUser, req.body.messageText)
   res.redirect('/');
 });
 
-router.get('/:id', function(req, res, next) {
+router.get('/:id', async function(req, res, next) {
   const messageId = req.params.id;
-  for (const message of messages) {
-    if (message.id === parseInt(messageId)) {
-      res.render("message", {message: message})
-    }
-  }
+  const message = await db.findMessage(messageId);
+  res.render("message", {message: message})
   
 });
 
